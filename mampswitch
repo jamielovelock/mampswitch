@@ -1,0 +1,63 @@
+#!/Users/lovelockj/bin/php/bin/php
+<?php
+
+	define('MAMP_PHP_PATH', '/Applications/MAMP/bin/php');
+	define('USER_BIN', '/Users/lovelockj/bin');
+
+	$versions = str_replace(MAMP_PHP_PATH . '/', '', glob(MAMP_PHP_PATH	 . '/*', GLOB_ONLYDIR));
+
+	$current = '';
+	foreach($versions as $version){
+		if (stristr(PHP_BINDIR, $version)){
+			$current = $version;
+		}
+	}
+
+	$longOptions = array('help', 'version', 'list');
+	$options = "hvl";
+
+	$opts = getopt($options, $longOptions);
+
+
+	// SWITCH VERSIONS
+	if (empty($opts) && isset($argv[1])){
+		//first check its a valid version
+
+		$requested_version = $argv[1];
+
+		if (!in_array($requested_version, $versions)){
+			echo "ERROR PHP {$requested_version} not found" . PHP_EOL;
+		} else {
+			//Lets update this.
+			echo "Unlinking " . USER_BIN . '/php';
+			unlink(USER_BIN . '/php');
+			echo "Linking " . $requested_version . PHP_EOL;
+			symlink(MAMP_PHP_PATH . '/' . $requested_version, USER_BIN . '/php');
+			echo "PHP CLI updated to {$requested_version}" . PHP_EOL;
+		}
+
+	} else {
+
+		// HELP MESSAGE
+		if (empty($opts) || isset($opts['help']) || isset($opts['h'])){
+			echo "switchphp - used to switch cli version of PHP (from MAMP)" . PHP_EOL;
+			echo PHP_EOL;
+			echo "Usage: switchphp [options] <version>" . PHP_EOL;
+			echo "-h, --help		Show this message" . PHP_EOL;
+			echo "-v, --version		Show current version" . PHP_EOL;
+			echo "-l, --list		List installed versions" . PHP_EOL;
+		}
+
+		// SHOW CURRENT VERSION
+		if (isset($opts['v']) || isset($opts['version'])){
+			echo $current . PHP_EOL;
+		}
+
+		// LIST ALL VERSIONS
+		if (isset($opts['l']) || isset($opts['list'])){
+			foreach($versions as $version){
+				echo $version . PHP_EOL;
+			}
+		}
+
+	}
