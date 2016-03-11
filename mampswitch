@@ -40,9 +40,9 @@
 
 		// HELP MESSAGE
 		if (empty($opts) || isset($opts['help']) || isset($opts['h'])){
-			echo "switchphp - used to switch cli version of PHP (from MAMP)" . PHP_EOL;
+			echo "mampswitch - used to switch cli version of PHP (from MAMP)" . PHP_EOL;
 			echo PHP_EOL;
-			echo "Usage: switchphp [options] <version>" . PHP_EOL;
+			echo "Usage: mampswitch [options] <version>" . PHP_EOL;
 			echo "-h, --help		Show this message" . PHP_EOL;
 			echo "-v, --version		Show current version" . PHP_EOL;
 			echo "-l, --list		List installed versions" . PHP_EOL;
